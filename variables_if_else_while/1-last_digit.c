@@ -2,9 +2,9 @@
 #include <time.h>
 #include <stdio.h>
 /*
- *main - This program will print a random number
- *if the last digit of n is
- *Return: Always 0 (Success)
+ * main - This program will print a random number
+ * if the last digit of n is
+ * Return: Always 0 (Success)
  */
 int main(void)
 {
