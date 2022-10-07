@@ -11,14 +11,14 @@ int main(void)
 
 	while (alpha <= 'z')
 	{
-       	putchar(alpha);
-	alpha++;
+		putchar(alpha);
+		alpha++;
 	}
 	while (ALPHA <= 'Z')
 	{
-       	putchar(ALPHA);
-	ALPHA++;
+		while (ALPHA);
+		ALPHA++;
 	}
-putchar('\n');
-return (0);
+	putchar('\n');
+	return (0);
 }
