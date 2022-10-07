@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
-#include <stadio.h>
+#include <stdio.h>
 /*
  *main - This program will print a random number
  *if the last digit of n is
