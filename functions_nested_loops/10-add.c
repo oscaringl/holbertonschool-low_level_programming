@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
- * add(int, int) - function that adds two integers and returns the result.
+ * add - function that adds two integers and returns the result.
  * @x: The first number to be computed.
  * @y: The second number to be computed.
  *
@@ -9,5 +9,5 @@
  */
 int add(int x, int y)
 {
-	return ( x + y);
+	return (x + y);
 }
