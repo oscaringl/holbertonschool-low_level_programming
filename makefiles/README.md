@@ -3,6 +3,7 @@ C - Makefiles
 Tasks
 
 0. make -f 0-Makefile: Create your first Makefile.
+
 Requirements:
 
 name of the executable: school
@@ -11,6 +12,7 @@ The all rule builds your executable
 variables: none
 
 1. make -f 1-Makefile
+
 Requirements:
 
 name of the executable: school
@@ -21,6 +23,7 @@ CC: the compiler to be used
 SRC: the .c files
 
 2. make -f 2-Makefile: Create your first useful Makefile.
+
 Requirements:
 
 name of the executable: school
@@ -35,6 +38,7 @@ The all rule should recompile only the updated source files
 You are not allowed to have a list of all the .o files
 
 3. make -f 3-Makefile
+
 Requirements:
 
 name of the executable: school
@@ -53,7 +57,9 @@ RM: the program to delete files
 The all rule should recompile only the updated source files
 The clean, oclean, fclean, re rules should never fail
 You are not allowed to have a list of all the .o files
+
 4. A complete Makefile
+
 Requirements:
 
 name of the executable: school
