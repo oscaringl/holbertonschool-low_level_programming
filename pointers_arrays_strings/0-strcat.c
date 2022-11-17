@@ -8,7 +8,7 @@
  * Return: pointer to the resulting string dest.
  */
 
-char *_strcat(char *dest, char *src);
+char *_strcat(char *dest, char *src)
 {
 	int a = 0,  z = 0;
 	int i;
