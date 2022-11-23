@@ -12,7 +12,7 @@ char *cap_string(char *str)
 	int sptr[] = {32, 9, 10, 44, 59, 46, 33, 63, 34, 40, 41, 123, 125};
 
 	if (str[e] >= 97 && str[e] <= 122)
-		str[e] = str[e] -32;
+		str[e] = str[e] - 32;
 	e++;
 	while (str[e] != '\0')
 	{
@@ -21,7 +21,7 @@ char *cap_string(char *str)
 			if (str[e] == sptr[i])
 			{
 				if ((str[e + 1] >= 97) && (str[e + 1] <= 122))
-					str[e +1] = str[e + 1] - 32;
+					str[e + 1] = str[e + 1] - 32;
 				break;
 			}
 		}
