@@ -1,31 +1,39 @@
 #include "search_algos.h"
 
 /**
- * advanced_binary - searches for a value in a sorted array of integers
- * @array: pointer to the first element of the array to search in
- * @size: number of elements in array
+ * print_subarray - subroutine to print out the elements of an array
+ * @array: array to print
+ * @size: length of array
+ */
+void print_subarray(int *array, size_t size)
+{
+	printf("Searching in array: %d", *array++);
+	while (--size)
+		printf(", %d", *array++);
+	printf("\n");
+}
+
+/**
+ * advanced_binary - binary search for element in array
+ * @array: array to search
+ * @size: size of array
  * @value: value to search for
  *
- * Return: index where value is located
- * If value is not present in or if array is NULL, your function must return -1
+ * Return: index of element equal to `value`, or -1 if absent or array is
+ * NULL or empty.
  */
 int advanced_binary(int *array, size_t size, int value)
 {
-	size_t i;
+	int r;
+	size_t mid = (size - 1) / 2;
 
-	printf("Searching in array: ");
-	for (i = 0; i < size; ++i)
-	{
-		printf("%d", array[i]);
-		if (i < size - 1)
-			printf(", ");
-	}
-	printf("\n");
-	if (size == 1)
-		return (*array == value ? *array : -1);
-	if (array[size / 2] < value)
-		return (advanced_binary(array + (size / 2) + 1, size / 2, value));
-	if (array[size / 2] == value)
-		return (array[size / 2]);
-	return (advanced_binary(array, size / 2, value));
+	if (array == NULL || size == 0)
+		return (-1);
+	print_subarray(array, size);
+	if (value == array[0])
+		return (0);
+	if (value <= array[mid])
+		return (advanced_binary(array, mid + 1, value));
+	r = advanced_binary(array + mid + 1, size - mid - 1, value);
+	return (r == -1 ? -1 : (int) (mid + 1 + r));
 }
