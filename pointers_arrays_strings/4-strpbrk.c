@@ -1,5 +1,5 @@
 /**
- * _strpbrk - Locates the first occurrence of any byte from accept in the string s.
+ * _strpbrk - Locates the first occurrence of any byte from accept in string s.
  * @s: The string to search.
  * @accept: The string containing the bytes to search for.
  *
