@@ -1,49 +1,49 @@
 #include "holberton.h"
 
-/**
- * _strlen - Calculates the length of a string.
- * @s: The string.
- *
- * Return: The length of the string.
- */
-int _strlen(char *s)
-{
-    int len = 0;
-    while (*s)
-    {
-        len++;
-        s++;
-    }
-    return len;
-}
+int check_palindrome(char *s, int low, int high);
 
 /**
- * is_palindrome_helper - Helper function to check if a string is a palindrome.
- * @s: The string to check.
- * @start: The start index of the string.
- * @end: The end index of the string.
+ * is_palindrome - check whether a string is a palindrome
  *
- * Return: 1 if the string is a palindrome, 0 otherwise.
- */
-int is_palindrome_helper(char *s, int start, int end)
-{
-    if (start >= end)
-        return 1;
-
-    if (s[start] == s[end])
-        return is_palindrome_helper(s, start + 1, end - 1);
-
-    return 0;
-}
-
-/**
- * is_palindrome - Checks if a string is a palindrome.
- * @s: The string to check.
+ * @s: the character string to process
  *
- * Return: 1 if the string is a palindrome, 0 otherwise.
+ * Return: 1 if the string is a palindrome, 0 otherwise
  */
 int is_palindrome(char *s)
 {
-    int len = _strlen(s);
-    return is_palindrome_helper(s, 0, len - 1);
+	return (check_palindrome(s, 0, _strlen_recursion(s) - 1));
+}
+
+/**
+ * check_palindrome - check whether a string is a palindrome
+ *
+ * @s: the character string to process
+ * @low: the starting index of the string
+ * @high: the last index of the string
+ *
+ * Return: 1 if the string is a palindrome, 0 otherwise
+ */
+int check_palindrome(char *s, int low, int high)
+{
+	if (low > high)
+		return (1);
+	if (s[low] != s[high])
+		return (0);
+	return (check_palindrome(s, low + 1, high - 1));
+}
+
+/**
+ * _strlen_recursion - compute the length of a string
+ *
+ * @s: the string to be processed
+ *
+ * Return: length of the string
+ */
+int _strlen_recursion(char *s)
+{
+	int length = 1;
+
+	if (*s == '\0')
+		return (0);
+	return (length + _strlen_recursion(s + 1));
 }
