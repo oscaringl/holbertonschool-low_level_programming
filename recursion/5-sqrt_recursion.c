@@ -1,5 +1,5 @@
 /**
- * sqrt_helper - Helper function to find the square root.
+ * _sqrt_inner - recursively compute square root of perfect square
  * @n: The number to find the square root of.
  * @i: The current guess for the square root.
  *
