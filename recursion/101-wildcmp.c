@@ -1,7 +1,7 @@
 #include "holberton.h"
 
 /**
- * wildcmp - Compares two strings and checks if they can be considered identical.
+ * wildcmp - Compares two strings checks if they can be considered identical.
  * @s1: The first string.
  * @s2: The second string.
  *
