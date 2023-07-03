@@ -1,5 +1,3 @@
-#include "main.h"
-
 /**
  * sqrt_helper - Helper function to find the square root.
  * @n: The number to find the square root of.
