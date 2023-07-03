@@ -5,7 +5,6 @@
  * @s: The string to be printed.
  */
 void _puts_recursion(char *s)
-void _puts_recursion(char *s)
 {
 	if ('\0' == *s)
 	{
