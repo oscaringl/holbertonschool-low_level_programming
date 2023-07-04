@@ -1,14 +1,12 @@
 #include <stdio.h>
 
 /**
- * main - Entry point
+ * main - print name of src file with new line
  *
- * Description: Prints the name of the file it was compiled from
- *
- * Return: Always 0 (Success)
+ * Return: 0 always
  */
 int main(void)
 {
-    printf("%s\n", __FILE__);
-    return 0;
+	puts(__FILE__);
+	return (0);
 }
