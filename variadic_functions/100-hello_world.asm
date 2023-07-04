@@ -1,14 +1,16 @@
-global  main
+global main
+
+section .data
+   msg: db "Hello, World",0xa
+   len: equ $-msg
+
 section .text
 main:
-        mov     rax, 4
-        mov     rbx, 1
-        mov     rcx, message
-        mov     rdx, 17
-        int	0x80
-
-        mov     rax, 1
-        xor     rbx, rbx
-        int	0x80
-message:
-        db      "Hello, World", 10
+   mov eax, 4
+   mov ebx, 1
+   mov ecx, msg
+   mov edx, len
+   int 0x80
+   mov al, 1
+   mov ebx, 0
+   int 0x80
