@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 /**
- * count_words - Counts the number of words in a string
- * @str: The input string
- *
- * Return: The number of words
+ * ch_free_grid - frees a 2 dimensional array.
+ * @grid: multidimensional array of char.
+ * @height: height of the array.
+ * Return: no return
  **/
 
 void ch_free_grid(char **grid, unsigned int height)
