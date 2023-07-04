@@ -1,16 +1,17 @@
 section .data
-	msg db "Hello, World",10
+    msg db "Hello, World", 0
+    len equ $ - msg
 
-	section .text
-	global main
+section .text
+    global _start
 
-main:
-	mov rax, 1
-	mov rdi, 1
-	mov rsi, msg
-	mov rdx, 17
-	syscall
+_start:
+    mov eax, 1       ; system call number (write)
+    mov edi, 1       ; file descriptor (stdout)
+    mov rsi, msg     ; pointer to the string
+    mov edx, len     ; length of the string
+    syscall
 
-	mov rax, 60
-	mov rdi, 0
-	syscall
+    mov eax, 60      ; system call number (exit)
+    xor edi, edi     ; exit status 0
+    syscall
