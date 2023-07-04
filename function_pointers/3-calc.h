@@ -1,7 +1,14 @@
 #ifndef _3_CALC_H_
 #define _3_CALC_H_
 
-/* Structure to hold operator and function */
+/**
+ * struct op - Structure to hold operator and function
+ * @op: The operator string
+ * @f: Pointer to the corresponding function
+ *
+ * Description: This structure holds an operator string and a pointer to the
+ *              corresponding function that performs the operation.
+ */
 typedef struct op
 {
 	char *op;
