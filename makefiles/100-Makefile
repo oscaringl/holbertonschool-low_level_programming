@@ -1,41 +1,20 @@
-# Compiler
-CC = gcc
+CC=gcc
+SRC=main.c school.c
+OBJ=$(SRC:%.c=%.o)
+NAME=school
+CFLAGS=-Wall -Werror -Wextra -pedantic
 
-# Source files
-SRC = $(wildcard *.c)
+.PHONY: all clean oclean fclean re
 
-# Object files
-OBJ = $(SRC:.c=.o)
+all: m.h $(OBJ)
+	$(CC) $(OBJ) -o $(NAME)
 
-# Executable name
-NAME = school
-
-# Programs for file deletion
-RM = rm -f
-
-# Compiler flags
-CFLAGS = -Wall -Werror -Wextra -pedantic
-
-# Default rule
-all: $(NAME)
-
-# Rule to build the executable
-$(NAME): $(OBJ)
-	$(CC) $(OBJ) -o $@
-
-# Rule to clean temporary files and the executable
 clean:
 	$(RM) *~ $(NAME)
 
-# Rule to clean object files
 oclean:
 	$(RM) $(OBJ)
 
-# Rule to clean temporary files, the executable, and object files
 fclean: clean oclean
 
-# Rule to force recompilation of all source files
-re: fclean all
-
-# Phony targets
-.PHONY: all clean oclean fclean re
+re: oclean all
