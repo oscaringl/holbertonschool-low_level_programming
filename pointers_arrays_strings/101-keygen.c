@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #define PASSWORD_LENGTH 12
 
@@ -29,6 +30,13 @@ char *generate_password(void)
 
 int main(void)
 {
-    printf("%s\n", generate_password());
+    char *password = generate_password();
+    char solution[] = "Holberton";
+    
+    if (strcmp(password, solution) == 0)
+        printf("Tada! Congrats\n");
+    else
+        printf("Wrong password\n");
+
     return 0;
 }
