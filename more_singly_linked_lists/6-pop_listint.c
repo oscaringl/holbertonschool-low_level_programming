@@ -20,5 +20,5 @@ int pop_listint(listint_t **head)
 		free(current);
 	}
 
-	return data;
+	return (data);
 }
