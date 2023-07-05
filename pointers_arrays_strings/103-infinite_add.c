@@ -1,72 +1,54 @@
-#include <stdio.h>
-#include <string.h>
+#include "main.h"
 
 /**
- * infinite_add - Adds two numbers
- * @n1: First number
- * @n2: Second number
- * @r: Buffer to store the result
- * @size_r: Size of the buffer
+ * infinite_add -  adds two numbers
+ * @n1: first number
+ * @n2: second number
+ * @r: result
+ * @size_r: result lenght
+ * Return: sum
  *
- * Return: Pointer to the result (r), or 0 if result cannot be stored in r
  */
+
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
+
 {
-	int len1, len2, sum, carry, i;
+	int i = 0, j = 0, k, l = 0, f, s, d = 0;
 
-	len1 = strlen(n1);
-	len2 = strlen(n2);
-	carry = 0;
-	i = 0;
-
-	if (len1 + 1 > size_r || len2 + 1 > size_r)
+	while (n1[i] != '\0')
+		i++;
+	while (n2[j] != '\0')
+		j++;
+	if (i > j)
+		l = i;
+	else
+		l = j;
+	if (l + 1 > size_r)
 		return (0);
-
-	len1--;
-	len2--;
-
-	while (len1 >= 0 || len2 >= 0)
+	r[l] = '\0';
+	for (k = l - 1 ; k >= 0 ; k--)
 	{
-		sum = carry;
-
-		if (len1 >= 0)
-			sum += n1[len1--] - '0';
-
-		if (len2 >= 0)
-			sum += n2[len2--] - '0';
-
-		carry = sum / 10;
-		sum %= 10;
-
-		r[i++] = sum + '0';
+		i--;
+		j--;
+		if (i >= 0)
+			f = n1[i] - '0';
+		else
+			f = 0;
+		if (j >= 0)
+			s = n2[j] - '0';
+		else
+			s = 0;
+		r[k] = (f + s + d) % 10 + '0';
+		d = (f + s + d) / 10;
 	}
-
-	if (carry)
+	if (d == 1)
 	{
-		if (i >= size_r)
+		r[l + 1] = '\0';
+		if (l + 2 > size_r)
 			return (0);
-
-		r[i++] = carry + '0';
+		while (l-- >= 0)
+			r[l + 1] = r[l];
+		r[0] = d + '0';
 	}
-
-	if (i >= size_r)
-		return (0);
-
-	r[i] = '\0';
-
-	/* Reverse the string */
-	len1 = 0;
-	len2 = i - 1;
-
-	while (len1 < len2)
-	{
-		char temp = r[len1];
-		r[len1] = r[len2];
-		r[len2] = temp;
-
-		len1++;
-		len2--;
-	}
-
 	return (r);
 }
