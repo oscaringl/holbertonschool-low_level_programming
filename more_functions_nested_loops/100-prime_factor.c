@@ -22,7 +22,7 @@ long int largest_prime_factor(long int n)
 		}
 	}
 
-	return n;
+	return (n);
 }
 
 /**
@@ -37,5 +37,5 @@ int main(void)
 
 	printf("%ld\n", largest_prime);
 
-	return 0;
+	return (0);
 }
