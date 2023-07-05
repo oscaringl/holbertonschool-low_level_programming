@@ -5,7 +5,8 @@
 #include <elf.h>
 
 /**
- * error_exit - Prints an error message to stderr and exits with a specified code.
+ * error_exit - Prints an error message to stderr and exits with a
+ * specified code.
  * @msg: The error message to print.
  * @exit_code: The exit code.
  */
@@ -174,7 +175,8 @@ void read_elf_header(int fd, Elf64_Ehdr *elf_header)
 }
 
 /**
- * elf_header - Displays the information contained in the ELF header of an ELF file.
+ * elf_header - Displays the information contained in the ELF
+ * header of an ELF file.
  * @file_path: The path of the ELF file.
  */
 void elf_header(char *file_path)
@@ -195,7 +197,8 @@ void elf_header(char *file_path)
 }
 
 /**
- * main - Entry point. Parses command-line arguments and calls elf_header function.
+ * main - Entry point. Parses command-line arguments and calls
+ * elf_header function.
  * @argc: The argument count.
  * @argv: The argument vector.
  *
