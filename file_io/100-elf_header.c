@@ -66,8 +66,7 @@ void print_data(unsigned char *e_ident)
  */
 void print_version(unsigned char *e_ident)
 {
-	printf("  Version:
-    %d (current)\n", e_ident[EI_VERSION]);
+	printf("  Version:                           %d (current)\n", e_ident[EI_VERSION]);
 }
 
 /**
@@ -139,8 +138,7 @@ void print_type(unsigned int e_type)
  */
 void print_entry(Elf64_Addr e_entry)
 {
-	printf("  Entry point address:
-    %#lx\n", (unsigned long) e_entry);
+	printf("  Entry point address:               %#lx\n", (unsigned long) e_entry);
 }
 
 /**
