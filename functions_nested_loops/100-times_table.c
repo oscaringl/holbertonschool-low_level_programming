@@ -1,6 +1,29 @@
 #include "main.h"
 
 /**
+ * print_number - Prints a number with a specified width
+ * @num: The number to be printed
+ * @width: The minimum width of the number
+ *
+ * Return: void
+ */
+void print_number(int num, int width)
+{
+	if (num < 0)
+	{
+		_putchar('-');
+		num = -num;
+	}
+
+	if (width >= 100)
+		_putchar((num / 100) + '0');
+	if (width >= 10)
+		_putchar(((num / 10) % 10) + '0');
+
+	_putchar((num % 10) + '0');
+}
+
+/**
  * print_times_table - Prints the n times table
  * @n: The number of times to print the table
  *
@@ -19,27 +42,10 @@ void print_times_table(int n)
 		{
 			result = i * j;
 
-			if (result < 10)
-			{
-				if (j != 0)
-				{
-					_putchar(' ');
-					_putchar(' ');
-				}
-				_putchar(result + '0');
-			}
-			else if (result < 100)
-			{
+			if (j != 0)
 				_putchar(' ');
-				_putchar((result / 10) + '0');
-				_putchar((result % 10) + '0');
-			}
-			else
-			{
-				_putchar((result / 100) + '0');
-				_putchar(((result / 10) % 10) + '0');
-				_putchar((result % 10) + '0');
-			}
+
+			print_number(result, n * n);
 
 			if (j != n)
 			{
