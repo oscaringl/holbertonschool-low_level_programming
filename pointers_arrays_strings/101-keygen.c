@@ -1,42 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
 
-#define PASSWORD_LENGTH 12
+#define NUM 2772
+#define SIZE 85
 
 /**
- * generate_password - Generates a random password
+ * main - create valid password for 101-crackme
  *
- * Return: The generated password
+ * Return: 0 always
  */
-char *generate_password(void)
-{
-    static char password[PASSWORD_LENGTH + 1];
-    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    int i;
-
-    srand(time(0));
-
-    for (i = 0; i < PASSWORD_LENGTH; i++)
-    {
-        password[i] = charset[rand() % (sizeof(charset) - 1)];
-    }
-
-    password[PASSWORD_LENGTH] = '\0';
-
-    return password;
-}
-
 int main(void)
 {
-    char *password = generate_password();
-    char solution[] = "Holberton";
-    
-    if (strcmp(password, solution) == 0)
-        printf("Tada! Congrats\n");
-    else
-        printf("Wrong password\n");
+	char pw[85], c;
+	int i = 0, sum = 0, diff;
 
-    return 0;
+	srand(time(NULL));
+LOOP:
+	while (sum < NUM - 126)
+	{
+		c = rand() % ('~' - '!') + '!';
+		if (c == '`' || c == '"' || c == '$' || c == '\\')
+			continue;
+		pw[i++] = c;
+		sum += c;
+	}
+	diff = NUM - sum;
+	if (diff < '!')
+	{
+		--i;
+		sum -= c;
+		goto LOOP;
+	}
+	else
+		pw[i++] = (char) diff;
+	sum += diff;
+	pw[i] = '\0';
+	printf("%s", pw);
+	return (0);
 }
