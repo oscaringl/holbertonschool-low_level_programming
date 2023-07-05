@@ -1,50 +1,27 @@
-#include <stdio.h>
+#include "main.h"
 
 /**
- * rot13 - Encodes a string using rot13.
- * @s: The string to be encoded.
- *
- * Return: A pointer to the encoded string.
+ * rot13 - encodes a string in rot13
+ * @s: string to be encoded
+ * Return: the resulting string
  */
+
 char *rot13(char *s)
 {
-	char *ptr = s;
-	int i;
+	int i, j;
+	char a[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char b[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	while (*ptr)
+	for (i = 0; s[i] != '\0'; i++)
 	{
-		for (i = 0; (*ptr >= 'a' && *ptr <= 'z') || (*ptr >= 'A' && *ptr <= 'Z'); i++)
+		for (j = 0; a[j] != '\0'; j++)
 		{
-			if ((*ptr >= 'a' && *ptr <= 'm') || (*ptr >= 'A' && *ptr <= 'M'))
-				*ptr += 13;
-			else
-				*ptr -= 13;
-			ptr++;
+			if (s[i] == a[j])
+			{
+				s[i] = b[j];
+				break;
+			}
 		}
-		ptr++;
 	}
-
-	return s;
-}
-
-int main(void)
-{
-	char s[] = "ROT13 (\"rotate by 13 places\", sometimes hyphenated ROT-13) is a simple letter substitution cipher.\n";
-	char *p;
-
-	p = rot13(s);
-	printf("%s", p);
-	printf("------------------------------------\n");
-	printf("%s", s);
-	printf("------------------------------------\n");
-	p = rot13(s);
-	printf("%s", p);
-	printf("------------------------------------\n");
-	printf("%s", s);
-	printf("------------------------------------\n");
-	p = rot13(s);
-	printf("%s", p);
-	printf("------------------------------------\n");
-	printf("%s", s);
-	return (0);
+	return (s);
 }
