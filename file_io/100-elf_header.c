@@ -1,163 +1,114 @@
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <elf.h>
 
 /**
- * get_magic - print magic numbers from ELF header if they exist, or exit
- * with error 98 if file is not ELF format
- * @ehdr: pointer to struct containing header features
- * @fname: name of file
- * @fd: file descriptor for `filename'
+ * error_exit - Prints an error message to stderr and exits with a specified code.
+ * @msg: The error message to print.
+ * @exit_code: The exit code.
  */
-void get_magic(Elf64_Ehdr *ehdr, char *fname, int fd)
+void error_exit(char *msg, int exit_code)
 {
-	size_t i = 0;
-	unsigned char *mgc = ehdr->e_ident;
-
-	if (mgc[EI_MAG0] == ELFMAG0 &&
-	    mgc[EI_MAG1] == ELFMAG1 &&
-	    mgc[EI_MAG2] == ELFMAG2 &&
-	    mgc[EI_MAG3] == ELFMAG3)
-	{
-		printf("Magic:  ");
-		while (i < EI_NIDENT)
-			printf(" %02x", ehdr->e_ident[i++]);
-		printf("\n");
-	}
-	else
-	{
-		dprintf(STDERR_FILENO, "Error: %s is not an ELF file\n", fname);
-		if (close(fd))
-			dprintf(STDERR_FILENO, "Problem closing fd %d", fd);
-		exit(98);
-	}
+	dprintf(STDERR_FILENO, "%s\n", msg);
+	exit(exit_code);
 }
 
 /**
- * get_class - check class of ELF file
- * @ehdr: pointer to struct of header features
+ * print_magic - Prints the magic bytes of the ELF file.
+ * @e_ident: The ELF identification bytes.
  */
-void get_class(Elf64_Ehdr *ehdr)
+void print_magic(unsigned char *e_ident)
 {
-	printf("%-35s", "Class:");
-	switch (ehdr->e_ident[EI_CLASS])
-	{
-	case ELFCLASSNONE:
-		printf("INVALID\n");
-		break;
-	case ELFCLASS32:
+	int i;
+
+	printf("  Magic:   ");
+	for (i = 0; i < EI_NIDENT; i++)
+		printf("%02x ", e_ident[i]);
+	printf("\n");
+}
+
+/**
+ * print_class - Prints the ELF file class (32-bit or 64-bit).
+ * @e_ident: The ELF identification bytes.
+ */
+void print_class(unsigned char *e_ident)
+{
+	printf("  Class:                             ");
+	if (e_ident[EI_CLASS] == ELFCLASS32)
 		printf("ELF32\n");
-		break;
-	case ELFCLASS64:
+	else if (e_ident[EI_CLASS] == ELFCLASS64)
 		printf("ELF64\n");
-		break;
-	}
+	else
+		printf("<unknown: %x>\n", e_ident[EI_CLASS]);
 }
 
 /**
- * get_data - get endianness of ELF file
- * @ehdr: pointer to struct of ELF header features
+ * print_data - Prints the data encoding of the ELF file.
+ * @e_ident: The ELF identification bytes.
  */
-void get_data(Elf64_Ehdr *ehdr)
+void print_data(unsigned char *e_ident)
 {
-	printf("%-35s", "Data:");
-	switch (ehdr->e_ident[EI_DATA])
-	{
-	case ELFDATANONE:
-		printf("Unknown data format\n");
-		break;
-	case ELFDATA2LSB:
-		printf("2's complement, little-endian\n");
-		break;
-	case ELFDATA2MSB:
-		printf("2's complement big-endian\n");
-		break;
-	}
+	printf("  Data:                              ");
+	if (e_ident[EI_DATA] == ELFDATA2LSB)
+		printf("2's complement, little endian\n");
+	else if (e_ident[EI_DATA] == ELFDATA2MSB)
+		printf("2's complement, big endian\n");
+	else
+		printf("<unknown: %x>\n", e_ident[EI_DATA]);
 }
 
 /**
- * get_velf - get version of ELF file
- * @ehdr: pointer to struct of ELF header features
+ * print_version - Prints the version of the ELF file.
+ * @e_ident: The ELF identification bytes.
  */
-void get_velf(Elf64_Ehdr *ehdr)
+void print_version(unsigned char *e_ident)
 {
-	printf("%-35s", "Version:");
-	switch (ehdr->e_ident[EI_VERSION])
-	{
-	case EV_NONE:
-		printf("%d (invalid)\n", EV_NONE);
-		break;
-	case EV_CURRENT:
-		printf("%d (current)\n", EV_CURRENT);
-		break;
-	}
+	printf("  Version:                           %d (current)\n", e_ident[EI_VERSION]);
 }
 
 /**
- * get_osabi - determine which ABI convention is in use
- * @ehdr: pointer to struct of ELF header features
+ * print_os_abi - Prints the operating system and ABI of the ELF file.
+ * @e_ident: The ELF identification bytes.
  */
-void get_osabi(Elf64_Ehdr *ehdr)
+void print_os_abi(unsigned char *e_ident)
 {
-	printf("%-35s", "OS/ABI:");
-	switch (ehdr->e_ident[EI_OSABI])
+	printf("  OS/ABI:                            ");
+	switch (e_ident[EI_OSABI])
 	{
 	case ELFOSABI_SYSV:
 		printf("UNIX - System V\n");
 		break;
-	case ELFOSABI_HPUX:
-		printf("UNIX - HP-UX\n");
-		break;
 	case ELFOSABI_NETBSD:
 		printf("UNIX - NetBSD\n");
-		break;
-	case ELFOSABI_LINUX:
-		printf("UNIX - Linux\n");
 		break;
 	case ELFOSABI_SOLARIS:
 		printf("UNIX - Solaris\n");
 		break;
-	case ELFOSABI_IRIX:
-		printf("UNIX - IRIX\n");
-		break;
-	case ELFOSABI_FREEBSD:
-		printf("UNIX - FreeBSD\n");
-		break;
-	case ELFOSABI_TRU64:
-		printf("UNIX - TRU64\n");
-		break;
-	case ELFOSABI_ARM:
-		printf("ARM\n");
-		break;
-	case ELFOSABI_STANDALONE:
-		printf("Stand-alone (embedded)\n");
-		break;
 	default:
-		printf("<unknown: %d>\n", ehdr->e_ident[EI_OSABI]);
+		printf("<unknown: %x>\n", e_ident[EI_OSABI]);
+		break;
 	}
 }
 
 /**
- * get_vabi - get ABI version
- * @ehdr: pointer to struct of ELF header features
+ * print_abi_version - Prints the ABI version of the ELF file.
+ * @e_ident: The ELF identification bytes.
  */
-void get_vabi(Elf64_Ehdr *ehdr)
+void print_abi_version(unsigned char *e_ident)
 {
-	printf("%-35s%d\n", "ABI Version:", ehdr->e_ident[EI_ABIVERSION]);
+	printf("  ABI Version:                       %d\n", e_ident[EI_ABIVERSION]);
 }
 
 /**
- * get_type - determine file type
- * @ehdr: pointer to struct of ELF header features
+ * print_type - Prints the type of the ELF file.
+ * @e_type: The ELF file type.
  */
-void get_type(Elf64_Ehdr *ehdr)
+void print_type(unsigned int e_type)
 {
-	printf("%-35s", "Type:");
-	switch (ehdr->e_type)
+	printf("  Type:                              ");
+	switch (e_type)
 	{
 	case ET_NONE:
 		printf("NONE (Unknown type)\n");
@@ -174,68 +125,91 @@ void get_type(Elf64_Ehdr *ehdr)
 	case ET_CORE:
 		printf("CORE (Core file)\n");
 		break;
+	default:
+		printf("<unknown: %x>\n", e_type);
+		break;
 	}
 }
 
 /**
- * get_entry - determine entry point function address
- * @ehdr: pointer to struct of ELF header features
+ * print_entry - Prints the entry point address of the ELF file.
+ * @e_entry: The entry point address.
  */
-void get_entry(Elf64_Ehdr *ehdr)
+void print_entry(Elf64_Addr e_entry)
 {
-	printf("%-35s0x%lx\n", "Entry point address:",
-	       (unsigned long) ehdr->e_entry);
+	printf("  Entry point address:               %#lx\n", (unsigned long) e_entry);
 }
 
 /**
- * main - display information contained in ELF file header
- * @argc: number of arguments
- * @argv: array of string arguments
- *
- * Return: EXIT_SUCCESS on success, otherwise 98 on error
+ * display_elf_header - Displays the information contained in the ELF header.
+ * @elf_header: Pointer to the ELF header structure.
  */
-int main(int argc, char *argv[])
+void display_elf_header(Elf64_Ehdr *elf_header)
+{
+	printf("ELF Header:\n");
+	print_magic(elf_header->e_ident);
+	print_class(elf_header->e_ident);
+	print_data(elf_header->e_ident);
+	print_version(elf_header->e_ident);
+	print_os_abi(elf_header->e_ident);
+	print_abi_version(elf_header->e_ident);
+	print_type(elf_header->e_type);
+	print_entry(elf_header->e_entry);
+}
+
+/**
+ * read_elf_header - Reads the ELF header from the file.
+ * @fd: The file descriptor of the ELF file.
+ * @elf_header: Pointer to the ELF header structure to store the read data.
+ */
+void read_elf_header(int fd, Elf64_Ehdr *elf_header)
+{
+	ssize_t bytes_read;
+
+	bytes_read = read(fd, elf_header, sizeof(Elf64_Ehdr));
+	if (bytes_read == -1)
+		error_exit("Error: Unable to read ELF header", 98);
+	else if (bytes_read != sizeof(Elf64_Ehdr))
+		error_exit("Error: Incomplete ELF header read", 98);
+}
+
+/**
+ * elf_header - Displays the information contained in the ELF header of an ELF file.
+ * @file_path: The path of the ELF file.
+ */
+void elf_header(char *file_path)
 {
 	int fd;
-	ssize_t r;
-	Elf64_Ehdr *helf;
+	Elf64_Ehdr elf_header;
 
+	fd = open(file_path, O_RDONLY);
+	if (fd == -1)
+		error_exit("Error: Unable to open ELF file", 98);
+
+	read_elf_header(fd, &elf_header);
+
+	display_elf_header(&elf_header);
+
+	if (close(fd) == -1)
+		error_exit("Error: Unable to close ELF file", 98);
+}
+
+/**
+ * main - Entry point. Parses command-line arguments and calls elf_header function.
+ * @argc: The argument count.
+ * @argv: The argument vector.
+ *
+ * Return: 0 on success, or an exit status on failure.
+ */
+int main(int argc, char **argv)
+{
 	if (argc != 2)
 	{
-		dprintf(STDERR_FILENO, "Usage: %s <elf_file>\n", argv[0]);
-		exit(98);
+		dprintf(STDERR_FILENO, "Usage: %s elf_filename\n", argv[0]);
+		return 98;
 	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: could not open %s\n", argv[1]);
-		exit(98);
-	}
-	helf = malloc(sizeof(Elf64_Ehdr));
-	if (helf == NULL)
-	{
-		dprintf(STDERR_FILENO, "Error: out of memory\n");
-		close(fd);
-		exit(98);
-	}
-	r = read(fd, helf, sizeof(Elf64_Ehdr));
-	if (r == -1)
-	{
-		free(helf);
-		dprintf(STDERR_FILENO, "Error: could not read %s\n", argv[1]);
-		close(fd);
-		exit(98);
-	}
-	if (close(fd))
-		dprintf(STDERR_FILENO, "Problem closing fd %d", fd);
-	get_magic(helf, argv[1], fd);
-	get_class(helf);
-	get_data(helf);
-	get_velf(helf);
-	get_osabi(helf);
-	get_vabi(helf);
-	get_type(helf);
-	get_entry(helf);
-	free(helf);
-	exit(EXIT_SUCCESS);
+
+	elf_header(argv[1]);
+
+	return 0;
 }
