@@ -1,25 +1,33 @@
 #include "lists.h"
 
 /**
- * get_nodeint_at_index - Returns the nth node of a listint_t linked list.
- * @head: Pointer to the head of the list.
- * @index: Index of the node, starting at 0.
- *
- * Return: The nth node of the list, or NULL if the node does not exist.
+ * get_nodeint_at_index - returns the nth node of a linked list.
+ * @head: pointer to start of a list.
+ * @index: index of node.
+ * Return:  returns the nth node of a linked list.
  */
+
 listint_t *get_nodeint_at_index(listint_t *head, unsigned int index)
 {
-	listint_t *current = head;
-	unsigned int count = 0;
+	unsigned int nodes = 0;
+	listint_t *copy;
+	unsigned int counter = 0;
 
-	while (current != NULL)
+	copy = head;
+
+	while (copy != NULL)
 	{
-		if (count == index)
-			return current;
-
-		current = current->next;
-		count++;
+		nodes++;
+		copy = copy->next;
 	}
+	copy = head;
+	if (index > nodes - 1)
+		return (NULL);
 
-	return (NULL);
+	while (counter != index)
+	{
+		counter++;
+		copy = copy->next;
+	}
+	return (copy);
 }
